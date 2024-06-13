@@ -18,8 +18,8 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-4 text-gray-800">Surat Masuk Baru</h1>
-                <div class="card card-success">
+                <h1 class="h3 mb-4 text-gray-800">Surat Masuk </h1>
+                 <div class="card card-success">
                     <div class="card-body">
                         <?= $this->session->flashdata('message'); ?>
                         <div class="row">
