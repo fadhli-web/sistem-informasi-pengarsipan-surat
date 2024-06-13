@@ -6,6 +6,7 @@ class Ajax extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('model_surat');
+		$this->load->model('model_laporan');
 	}
 
 	public function indekssm()
@@ -105,6 +106,17 @@ class Ajax extends CI_Controller
 			$data['profil'] = $this->model_surat->getotherwithadd('user', 'WHERE id_user=' . $id_user)->result();
 
 			$this->load->view('ajax/modaleditprofil', $data);
+		}
+	}
+
+	public function ajaxubahlp()
+	{
+		if (null !== $this->input->post('id_laporan')) {
+			$id_laporantendik = $this->input->post('id_laporan');
+
+			$data['laporan_tendik'] = $this->model_laporan->getDataWithId('laporantendik', $id_laporantendik)->result();
+			
+			$this->load->view('ajax/modalubahlp', $data);
 		}
 	}
 }

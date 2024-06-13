@@ -27,7 +27,7 @@
     <hr>
     <center>
         <h1>Laporan Surat Keluar</h1>
-        <h2>SMK Darel Hikmah kota Pekanbaru</h2>
+        <h2>SMK Bayu Tutor kota Pekanbaru</h2>
         <span class="text-muted">Jl. Manyar Sakti KM. 12, Simpang Baru, Tampan, Pekanbaru</span>
     </center>
     <hr>

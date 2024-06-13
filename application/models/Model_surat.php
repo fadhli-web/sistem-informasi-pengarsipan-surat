@@ -58,4 +58,5 @@ class Model_surat extends CI_Model
     {
         return $this->db->delete($table, $where);
     }
+    
 }

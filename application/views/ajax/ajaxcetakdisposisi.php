@@ -5,7 +5,7 @@
         <tr>
           <th colspan="3">
             <img src="<?php echo base_url('vendor/') ?>img/logo.jpg" alt="logo.jpg" width="150" height="150" style="float: left; margin-left: 80px; ">
-            <center><h1>Lembar Disposisi<br>SMK DAREL HIKMAH PEKANBARU <br></h1>
+            <center><h1>Lembar Disposisi<br>SMK Bayu Tutor PEKANBARU <br></h1>
               <span class="text-muted">Jl. Manyar Sakti, No. 12, Simpang Baru, Pekanbaru</span></center>
           </th>
         </tr>

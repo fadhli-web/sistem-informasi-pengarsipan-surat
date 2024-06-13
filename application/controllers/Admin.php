@@ -10,6 +10,7 @@ class Admin extends CI_Controller
     {
         parent::__construct();
         $this->load->model('model_surat');
+        $this->load->model('model_laporan');
         if (!$this->session->userdata('level')) {
             redirect('auth');
         }
@@ -27,10 +28,12 @@ class Admin extends CI_Controller
         $today = date('Y-m-d');
         $sm_today = "tanggal_diterima='$today'";
         $sk_today = "tanggal_keluar='$today'";
+        $lt_today = "tanggal='$today'";
         $data['count_sm'] = $this->model_surat->countdata('suratmasuk')->result();
         $data['count_sk'] = $this->model_surat->countdata('suratkeluar')->result();
         $data['sm_today'] = $this->model_surat->getdatawithadd('suratmasuk', $sm_today)->result();
         $data['sk_today'] = $this->model_surat->getdatawithadd('suratkeluar', $sk_today)->result();
+        // $data['lt_today'] = $this->model_laporan->getdatawithadd('laporan_tendik', $lt_today)->result();
         $data['count_indeks'] = $this->model_surat->countother('indeks')->result();
         $data['count_users'] = $this->model_surat->countother('user')->result();
 
@@ -38,6 +41,177 @@ class Admin extends CI_Controller
         $this->load->view('admin/dashboard', $data);
         $this->load->view('templates/footer');
     }
+
+    // laporan tendik
+    public function laporan_tendik()
+    {
+        $data['title'] = 'Laporan Tenaga Pendidik';
+        if ($this->session->userdata('level') == 1) {
+            $data['user'] = 'superadmin';
+        } elseif ($this->session->userdata('level') == 2) {
+            $data['user'] = 'admin';
+        }
+        if ($data['user'] == 'admin') {
+            $data['laporan_tendik'] = $this->model_laporan->getDataWithIdUser('laporantendik', $this->session->userdata('id_user') )->result();
+        }else{
+            $data['laporan_tendik'] = $this->model_laporan->getData('laporantendik')->result();
+        }
+        $this->load->view('templates/header', $data);
+        $this->load->view('admin/laporantendik/laporan_tendik', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function tambah_laporan_tendik() {
+        $nama_laporan = $this->input->post('nama_laporan');
+        $nama_sekolah = $this->input->post('nama_sekolah');
+        $tingkat_sekolah = $this->input->post('tingkat_sekolah');
+        $namaberkas = $_FILES['berkas_laporan_tendik']['name'];
+        $exp = explode('.', $namaberkas);
+        $typenamaberkas = end($exp);
+        $berkas_laporan = uniqid() . '.' . $typenamaberkas;
+        $tanggal = $this->input->post('tanggal');
+        $keterangan = $this->input->post('keterangan');
+
+        $query = $this->db->get_where('laporantendik', ['nama_laporan' => $nama_laporan])->row_array();
+        
+
+        if ($query) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h5><i class="icon fas fa-times"></i> Nama Laporan sudah ada!</h5>
+                </div>');
+            redirect('admin/laporan_tendik');
+        } else {
+            $config['upload_path']          = 'vendor/files/laporan_tendik/';
+            $config['allowed_types']        = 'pdf|xlsx';
+            $config['file_name'] = $berkas_laporan;
+            $this->load->library('upload', $config);
+            if (!$this->upload->do_upload('berkas_laporan_tendik')) {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h5><i class="icon fas fa-times"></i> Gagal!</h5>
+                    ' . $this->upload->display_errors() . '
+                    </div>');
+                redirect('admin/laporan_tendik');
+            } 
+            else {
+                $array = [
+                    'id_laporantendik' => null,
+                    'nama_laporan' => $nama_laporan,
+                    'nama_sekolah' => $nama_sekolah,
+                    'tingkat_sekolah' => $tingkat_sekolah,
+                    'tanggal' => $tanggal,
+                    'keterangan' => $keterangan,
+                    'berkas' => $berkas_laporan,
+                    'id_user' => $this->session->userdata('id_user')
+                ];
+                $this->upload->do_upload();
+                $this->model_laporan->addData('laporantendik', $array);
+                $this->session->set_flashdata('message', '<div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h5><i class="icon fas fa-check"></i> Data ditambahkan!</h5>
+                    </div>');
+                redirect('admin/laporan_tendik');
+            }
+        }
+
+    }
+    public function ubah_laporan_tendik() {
+        $id_laporantendik = $this->input->post('id_laporantendik');
+        $nama_laporan = $this->input->post('nama_laporan');
+        $nama_sekolah = $this->input->post('nama_sekolah');
+        $tingkat_sekolah = $this->input->post('tingkat_sekolah');
+        // $exp = explode('.', $namaberkas);
+        // $typenamaberkas = end($exp);
+        // $berkas_laporan = uniqid() . '.' . $typenamaberkas;
+        $tanggal = $this->input->post('tanggal');
+        $keterangan = $this->input->post('keterangan');
+
+        $query = $this->db->get_where('laporantendik', ['nama_laporan' => $nama_laporan])->row_array();
+        
+
+        if (!$_FILES['berkas_laporan_tendik']['name']) {
+            $array = [
+                'nama_laporan' => $nama_laporan,
+                'nama_sekolah' => $nama_sekolah,
+                'tingkat_sekolah' => $tingkat_sekolah,
+                'tanggal' => $tanggal,
+                'keterangan' => $keterangan,
+            ];
+            $this->model_laporan->updatedata('laporantendik', $array, array('id_laporantendik' => $id_laporantendik));
+            $this->session->set_flashdata('message', '<div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h5><i class="icon fas fa-check"></i> Data diubah!</h5>
+                </div>');
+            redirect('admin/laporan_tendik');
+        } else {
+            $namaberkas = $_FILES['berkas_laporan_tendik']['name'];
+            $exp = explode('.', $namaberkas);
+            $typenamaberkas = end($exp);
+            $berkas_laporan = uniqid() . '.' . $typenamaberkas;
+
+            $config['upload_path']          = 'vendor/files/laporan_tendik/';
+            $config['allowed_types']        = 'pdf|xlsx';
+            $config['file_name'] = $berkas_laporan;
+            $this->load->library('upload', $config);
+            if (!$this->upload->do_upload('berkas_laporan_tendik')) {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h5><i class="icon fas fa-times"></i> Gagal!</h5>
+                    ' . $this->upload->display_errors() . '
+                    </div>');
+                redirect('admin/laporan_tendik');
+            } 
+            else {
+                $array = [
+                    'nama_laporan' => $nama_laporan,
+                    'nama_sekolah' => $nama_sekolah,
+                    'tingkat_sekolah' => $tingkat_sekolah,
+                    'tanggal' => $tanggal,
+                    'keterangan' => $keterangan,
+                    'berkas' => $berkas_laporan
+                ];
+                $this->upload->do_upload();
+                $this->model_laporan->updatedata('laporantendik', $array, array('id_laporantendik' => $id_laporantendik));
+                $this->session->set_flashdata('message', '<div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h5><i class="icon fas fa-check"></i> Data diubah!</h5>
+                    </div>');
+                redirect('admin/laporan_tendik');
+            }
+        }
+
+    }
+    public function hapuslp($id_laporan)
+    {
+        $cek_berkas = $this->model_laporan->getDataWithId('laporantendik', $id_laporan)->row_array();
+        var_dump($cek_berkas);
+        if (null !== $cek_berkas['berkas']) {
+            $path = 'vendor/files/laporan_tendik/' . $cek_berkas['berkas'];
+            unlink($path);
+        }
+        $query = $this->db->query('DELETE FROM laporantendik WHERE id_laporantendik=' . $id_laporan);
+        if ($query) {
+            $cek = $this->model_laporan->getDataWithId('laporantendik', 'id_laporantendik=' . $id_laporan)->row_array();
+            if ($cek['berkas'] != "") {
+                $path = 'vendor/files/laporan_tendik/' . $cek['berkas'];
+                unlink($path);
+            }
+            $this->session->set_flashdata('message', '<div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h5><i class="icon fas fa-check"></i> Data dihapus!</h5>
+                </div>');
+            redirect('admin/laporan_tendik');
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h5><i class="icon fas fa-times"></i> Gagal dihapus!</h5>
+                </div>');
+            redirect('admin/laporan_tendik');
+        }
+    }
+
+
 // suratmasuk
     public function suratmasuk()
     {
@@ -942,6 +1116,7 @@ class Admin extends CI_Controller
 
     public function download($table, $berkas_suratmasuk)
     {
+        var_dump($table);
         force_download('vendor/files/' . $table . '/' . $berkas_suratmasuk, null);
     }
 

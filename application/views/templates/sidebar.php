@@ -6,7 +6,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-envelope"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">E-Arsip <br>SMK Darel Hikmah</div>
+        <div class="sidebar-brand-text mx-3">E-Arsip <br>Dinas Pendidikan Siak Kecil</div>
     </a>
 
     <!-- Divider -->
@@ -28,7 +28,9 @@
         Data Master
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
+    <!-- Nav Item Surat - Pages Collapse Menu -->
+    <?php if ($user !== 'admin') { ?>
+    
     <li class="nav-item 
     <?php if (current_url() == base_url('admin/suratmasuk') or current_url() == base_url('admin/suratkeluar')) {
         echo 'active';
@@ -54,6 +56,16 @@
             </div>
         </div>
     </li>
+    <?php } ?>
+    <li class="nav-item 
+    <?php if (current_url() == base_url('admin/laporan_tendik')) {
+        echo 'active';
+    } ?>">
+        <a class="nav-link" href="<?= base_url('admin/laporan_tendik') ?>">
+            <i class="fas fa-fw fa-envelope"></i>
+            <span>Laporan Tendik</span>
+        </a>
+    </li>
 
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item 
@@ -70,11 +82,12 @@
         } ?>" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">List:</h6>
-                <a class="collapse-item 
-                <?php if($user == 'superadmin'): ?>
-                    <?php if (current_url() == base_url('admin/indeks')) {
-                        echo 'active';
-                    } ?>" href="<?php echo base_url('admin/indeks') ?>">Indeks</a>
+                    <!-- <a class="collapse-item 
+                    <?php if($user == 'superadmin'): ?>
+                        <?php if (current_url() == base_url('admin/indeks')) {
+                            echo 'active';
+                        } ?>" href="<?php echo base_url('admin/indeks') ?>">Indeks</a> -->
+
                     <a class="collapse-item 
                     <?php if (current_url() == base_url('admin/users')) {
                         echo 'active';
@@ -106,11 +119,7 @@
                 <?php if (current_url() == base_url('admin/laporan_suratmasuk')) {
                     echo 'active';
                 } ?>" href="<?php echo base_url('admin/laporan_suratmasuk') ?>">Laporan Surat Masuk</a>
-                <a class="collapse-item 
-                <?php if (current_url() == base_url('admin/laporan_suratkeluar')) {
-                    echo 'active';
-                } ?>" href="<?php echo base_url('admin/laporan_suratkeluar') ?>">Laporan Surat Keluar</a>
-            </div>
+                </div>
         </div>
     </li>
     <!-- Divider -->

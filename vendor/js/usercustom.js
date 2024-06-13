@@ -68,7 +68,7 @@ $(document).ready(function () {
     $('#filter-index-sm').change(function () {
         var id_indeks = $('#filter-index-sm option:selected').val();
         $.ajax({
-            url: 'http://localhost/e-arsip-ci/ajax/indekssm',
+            url: 'http://localhost/pengarsipan/ajax/indekssm',
             type: 'POST',
             data: {
                 'id_indeks': id_indeks
@@ -83,7 +83,7 @@ $(document).ready(function () {
         var id_suratmasuk = $(e.relatedTarget).data('id-suratmasuk');
 
         $.ajax({
-            url: 'http://localhost/e-arsip-ci/ajax/ajaxubahsm',
+            url: 'http://localhost/pengarsipan/ajax/ajaxubahsm',
             method: 'POST',
             data: 'id_suratmasuk=' + id_suratmasuk,
             success: function (data) {
@@ -92,11 +92,33 @@ $(document).ready(function () {
         })
     })
 
+    $('#ubahlp').on('show.bs.modal', function (e) {
+        var id_laporan = $(e.relatedTarget).data('id-laporan');
+        $.ajax({
+            url: 'http://localhost/pengarsipan/ajax/ajaxubahlp',
+            method: 'POST',
+            data: 'id_laporan=' + id_laporan,
+            success: function (data) {
+                $('#dataubahlaporan').html(data);
+            }
+        })
+    })
+
+    
+    $('#hapuslp').on('show.bs.modal', function (e) {
+        var id_laporan = $(e.relatedTarget).data('id-laporan');
+        var nama_laporan = $(e.relatedTarget).data('nama-laporan');
+
+        $('#hps-id-suratmasuk').attr('href', 'http://localhost/pengarsipan/admin/hapuslp/' + id_laporan);
+        $('#hps-no-suratmasuk').text(nama_laporan);
+    })
+
     $('#hapussm').on('show.bs.modal', function (e) {
+        console.log(e);
         var id_suratmasuk = $(e.relatedTarget).data('id-suratmasuk');
         var no_suratmasuk = $(e.relatedTarget).data('no-suratmasuk');
 
-        $('#hps-id-suratmasuk').attr('href', 'https://localhost/e-arsip-ci/admin/hapussm/' + id_suratmasuk);
+        $('#hps-id-suratmasuk').attr('href', 'http://localhost/pengarsipan/admin/hapussm/' + id_suratmasuk);
         $('#hps-no-suratmasuk').text(no_suratmasuk);
     })
 
@@ -105,7 +127,7 @@ $(document).ready(function () {
         var pengisi = $('#pengisi option:selected').val();
         var id_suratmasuk = $('#id_sm').val();
         $.ajax({
-            url: 'http://localhost/e-arsip-ci/ajax/ajaxcekpengisidisp',
+            url: 'http://localhost/pengarsipan/ajax/ajaxcekpengisidisp',
             type: 'POST',
             data: {
                 'pengisi': pengisi, 'id_suratmasuk': id_suratmasuk
@@ -121,7 +143,7 @@ $(document).ready(function () {
         var id_disposisi = $(e.relatedTarget).data('id_disposisi');
 
         $.ajax({
-            url: 'http://localhost/e-arsip-ci/ajax/ajaxeditdisp/'+id_disposisi,
+            url: 'http://localhost/pengarsipan/ajax/ajaxeditdisp/'+id_disposisi,
             type: 'POST',
             success: function(data){
                 $("#ajaxeditdisp").html(data);
@@ -143,10 +165,10 @@ $(document).ready(function () {
         var id_disposisi = $(e.relatedTarget).data('id_disposisi');
 
         $.ajax({
-            url: 'http://localhost/e-arsip-ci/admin/hapusdisp/'+id_disposisi,
+            url: 'http://localhost/pengarsipan/admin/hapusdisp/'+id_disposisi,
             type: 'POST',
             success: function(data){
-                $('#hps-id-disposisi').attr('href', 'http://localhost/e-arsip-ci/admin/hapusdisp/'+id_disposisi);
+                $('#hps-id-disposisi').attr('href', 'http://localhost/pengarsipan/admin/hapusdisp/'+id_disposisi);
             }
         })
         .done(function() {
@@ -165,7 +187,7 @@ $(document).ready(function () {
         var id_disposisi = $(e.relatedTarget).data('id_disposisi');
 
         $.ajax({
-            url: 'http://localhost/e-arsip-ci/ajax/ajaxcetakdisp/'+id_disposisi,
+            url: 'http://localhost/pengarsipan/ajax/ajaxcetakdisp/'+id_disposisi,
             type: 'POST',
             success: function(data){
                 document.getElementById('modalcetakdisp').innerHTML = data;
@@ -196,7 +218,7 @@ $(document).ready(function () {
     $('#filter-index-sk').change(function () {
         var id_indeks = $('#filter-index-sk option:selected').val();
         $.ajax({
-            url: 'http://localhost/e-arsip-ci/ajax/indekssk',
+            url: 'http://localhost/pengarsipan/ajax/indekssk',
             type: 'POST',
             data: {
                 'id_indeks': id_indeks
@@ -215,7 +237,7 @@ $(document).ready(function () {
         var id_suratkeluar = $(e.relatedTarget).data('id-sk');
 
         $.ajax({
-            url: 'http://localhost/e-arsip-ci/ajax/ajaxubahsk',
+            url: 'http://localhost/pengarsipan/ajax/ajaxubahsk',
             method: 'POST',
             data: 'id_suratkeluar=' + id_suratkeluar,
             success: function (data) {
@@ -228,7 +250,7 @@ $(document).ready(function () {
         var id_suratkeluar = $(e.relatedTarget).data('id-sk');
         var no_suratkeluar = $(e.relatedTarget).data('no-suratkeluar');
 
-        $('#hps-id-suratkeluar').attr('href', 'https://localhost/e-arsip-ci/admin/hapussk/' + id_suratkeluar);
+        $('#hps-id-suratkeluar').attr('href', 'https://localhost/pengarsipan/admin/hapussk/' + id_suratkeluar);
         $('#hps-no-suratkeluar').text(no_suratkeluar);
     })
 
@@ -239,7 +261,7 @@ $(document).ready(function () {
         var id_indeks = $(e.relatedTarget).data('id-indeks');
 
         $.ajax({
-            url: 'http://localhost/e-arsip-ci/ajax/ajaxubahindeks',
+            url: 'http://localhost/pengarsipan/ajax/ajaxubahindeks',
             type: 'POST',
             data: {
                 'id_indeks': id_indeks
@@ -254,7 +276,7 @@ $(document).ready(function () {
         var id_indeks = $(e.relatedTarget).data('id-indeks');
         var judul_indeks = $(e.relatedTarget).data('judul-indeks');
 
-        $('#hps-id-indeks').attr('href', 'https://localhost/e-arsip-ci/admin/hapusindeks/' + id_indeks);
+        $('#hps-id-indeks').attr('href', 'https://localhost/pengarsipan/admin/hapusindeks/' + id_indeks);
         $('#hps-judul-indeks').text(judul_indeks);
     })
 
@@ -278,7 +300,7 @@ $(document).ready(function () {
         var nama_lengkap = $(e.relatedTarget).data('nama-lengkap');
 
         $('#hps-nama-lengkap').text(nama_lengkap);
-        $('#hps-id-user').attr('href', 'http://localhost/e-arsip-ci/admin/hapususer/' + id_user);
+        $('#hps-id-user').attr('href', 'http://localhost/pengarsipan/admin/hapususer/' + id_user);
 
     })
 
@@ -286,7 +308,7 @@ $(document).ready(function () {
         var id_user = $(e.relatedTarget).data('id_user');
 
         $.ajax({
-            url: 'http://localhost/e-arsip-ci/ajax/ajaxeditprofil',
+            url: 'http://localhost/pengarsipan/ajax/ajaxeditprofil',
             type: 'POST',
             data: {
                 'id_user': id_user

@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Waktu pembuatan: 24 Feb 2020 pada 04.25
--- Versi server: 10.4.11-MariaDB
--- Versi PHP: 7.4.2
+-- Host: 127.0.0.1
+-- Generation Time: Dec 16, 2021 at 04:20 PM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 7.3.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `e-arsip_smkdh`
+-- Database: `e_arsip`
 --
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `disposisi`
+-- Table structure for table `disposisi`
 --
 
 CREATE TABLE `disposisi` (
@@ -38,7 +37,7 @@ CREATE TABLE `disposisi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `disposisi`
+-- Dumping data for table `disposisi`
 --
 
 INSERT INTO `disposisi` (`id_disposisi`, `pengisi`, `tujuan`, `instruksi`, `catatan`, `id_suratmasuk`) VALUES
@@ -51,7 +50,7 @@ INSERT INTO `disposisi` (`id_disposisi`, `pengisi`, `tujuan`, `instruksi`, `cata
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `indeks`
+-- Table structure for table `indeks`
 --
 
 CREATE TABLE `indeks` (
@@ -62,7 +61,7 @@ CREATE TABLE `indeks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `indeks`
+-- Dumping data for table `indeks`
 --
 
 INSERT INTO `indeks` (`id_indeks`, `kode_indeks`, `judul_indeks`, `detail`) VALUES
@@ -80,8 +79,7 @@ INSERT INTO `indeks` (`id_indeks`, `kode_indeks`, `judul_indeks`, `detail`) VALU
 
 -- --------------------------------------------------------
 
---
--- Struktur dari tabel `suratkeluar`
+
 --
 
 CREATE TABLE `suratkeluar` (
@@ -96,7 +94,7 @@ CREATE TABLE `suratkeluar` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `suratkeluar`
+-- Dumping data for table `suratkeluar`
 --
 
 INSERT INTO `suratkeluar` (`id_suratkeluar`, `no_suratkeluar`, `judul_suratkeluar`, `id_indeks`, `tujuan`, `tanggal_keluar`, `keterangan`, `berkas_suratkeluar`) VALUES
@@ -105,7 +103,7 @@ INSERT INTO `suratkeluar` (`id_suratkeluar`, `no_suratkeluar`, `judul_suratkelua
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `suratmasuk`
+-- Table structure for table `suratmasuk`
 --
 
 CREATE TABLE `suratmasuk` (
@@ -121,7 +119,7 @@ CREATE TABLE `suratmasuk` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `suratmasuk`
+-- Dumping data for table `suratmasuk`
 --
 
 INSERT INTO `suratmasuk` (`id_suratmasuk`, `no_suratmasuk`, `judul_suratmasuk`, `asal_surat`, `tanggal_masuk`, `tanggal_diterima`, `id_indeks`, `keterangan`, `berkas_suratmasuk`) VALUES
@@ -130,7 +128,7 @@ INSERT INTO `suratmasuk` (`id_suratmasuk`, `no_suratmasuk`, `judul_suratmasuk`, 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `user`
+-- Table structure for table `user`
 --
 
 CREATE TABLE `user` (
@@ -146,7 +144,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `user`
+-- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id_user`, `username`, `password`, `nama_lengkap`, `image`, `bio`, `facebook`, `email`, `level`) VALUES
@@ -158,68 +156,68 @@ INSERT INTO `user` (`id_user`, `username`, `password`, `nama_lengkap`, `image`, 
 --
 
 --
--- Indeks untuk tabel `disposisi`
+-- Indexes for table `disposisi`
 --
 ALTER TABLE `disposisi`
   ADD PRIMARY KEY (`id_disposisi`),
   ADD KEY `id_suratmasuk` (`id_suratmasuk`);
 
 --
--- Indeks untuk tabel `indeks`
+-- Indexes for table `indeks`
 --
 ALTER TABLE `indeks`
   ADD PRIMARY KEY (`id_indeks`);
 
 --
--- Indeks untuk tabel `suratkeluar`
+-- Indexes for table `suratkeluar`
 --
 ALTER TABLE `suratkeluar`
   ADD PRIMARY KEY (`id_suratkeluar`),
   ADD KEY `id_subindeks` (`id_indeks`);
 
 --
--- Indeks untuk tabel `suratmasuk`
+-- Indexes for table `suratmasuk`
 --
 ALTER TABLE `suratmasuk`
   ADD PRIMARY KEY (`id_suratmasuk`),
   ADD KEY `id_subindeks` (`id_indeks`);
 
 --
--- Indeks untuk tabel `user`
+-- Indexes for table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id_user`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `disposisi`
+-- AUTO_INCREMENT for table `disposisi`
 --
 ALTER TABLE `disposisi`
   MODIFY `id_disposisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT untuk tabel `indeks`
+-- AUTO_INCREMENT for table `indeks`
 --
 ALTER TABLE `indeks`
   MODIFY `id_indeks` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
--- AUTO_INCREMENT untuk tabel `suratkeluar`
+-- AUTO_INCREMENT for table `suratkeluar`
 --
 ALTER TABLE `suratkeluar`
   MODIFY `id_suratkeluar` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT untuk tabel `suratmasuk`
+-- AUTO_INCREMENT for table `suratmasuk`
 --
 ALTER TABLE `suratmasuk`
   MODIFY `id_suratmasuk` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
--- AUTO_INCREMENT untuk tabel `user`
+-- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `id_user` int(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
