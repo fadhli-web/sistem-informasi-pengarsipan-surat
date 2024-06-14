@@ -258,7 +258,7 @@ class Admin extends CI_Controller
                 'no_suratmasuk' => $no_suratmasuk,
                 'judul_suratmasuk' => $judul_suratmasuk,
                 'asal_surat' => $asal_surat,
-                'tanggal_masuk' => $tanggal_masuk,
+                'tanggal_masuk' => $tanggal_masuk, 
                 'tanggal_diterima' => $tanggal_diterima,
                 'id_indeks' => $id_indeks,
                 'keterangan' => $keterangan,

@@ -37,7 +37,7 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Nomor Surat</th>
-                                        <th>Judul Surat</th>
+                                        <th>Judul Surat </th>
                                         <th>Indeks</th>
                                         <th>Asal Surat</th>
                                         <th>Tanggal Masuk</th>
